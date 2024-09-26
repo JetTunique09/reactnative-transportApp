@@ -11,84 +11,92 @@ export default function TabTwoScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={<Ionicons size={310} name="code-slash" style={styles.headerImage} />}>
+      headerImage={
+      <Image
+        source={require('@/assets/images/contact.png')}
+        style={styles.mapImage}
+        resizeMode="cover"
+      />}>
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Contact</ThemedText>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
+      <ThemedText>Listes des membres d'équipe et personne à contacter : </ThemedText>
+      <Collapsible title="Responsables d'intervention">
         <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/contact.tsx</ThemedText>
+          Niveau 1 : John Doe - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.09.30.38.40</ThemedText>
         </ThemedText>
         <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
+          Niveau 2 : Tess Feuch - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.12.03.30.67</ThemedText>
+        </ThemedText>
+        <ThemedText>
+          Niveau 3 : No Rosen - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">07.49.03.33.00</ThemedText>
+        </ThemedText>
+        <ThemedText>
+          Pour rappel, joindre le responsable de <ThemedText type="defaultSemiBold">Niveau 3</ThemedText>{' '}
+          uniquement pour les <ThemedText type="defaultSemiBold">urgences</ThemedText>.
         </ThemedText>
         <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
+          <ThemedText type="link"></ThemedText>
         </ExternalLink>
       </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
+      <Collapsible title="Equipe Réseau">
         <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
+          - Jacques Miller - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.09.30.38.40</ThemedText>
+        </ThemedText>
+        <ThemedText>
+          - Jim Hoper - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.12.03.30.67</ThemedText>
+        </ThemedText>
+        <ThemedText>
+          - Mike Anigan - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">07.49.03.33.00</ThemedText>
+        </ThemedText>
+        <ThemedText>
+          Responsable Réseau : M.Brown  {' '}<ThemedText style={styles.blueText} type="defaultSemiBold">06.90.34.12.33</ThemedText>
         </ThemedText>
       </Collapsible>
-      <Collapsible title="Images">
+      <Collapsible title="Support Technique">
         <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
+          Responsable Technique : Luc Martin - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.72.19.84.12</ThemedText>
         </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
+        <ThemedText>
+          Technicien Réseau : Sophie Duval - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">07.15.23.45.67</ThemedText>
+        </ThemedText>
+        <ThemedText>
+          Support : Nicolas Dupuis - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.45.89.12.33</ThemedText>
+        </ThemedText>
       </Collapsible>
-      <Collapsible title="Custom fonts">
+      <Collapsible title="Equipe Communication">
         <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
+          Responsable Com. : Julie Bernard - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.21.43.55.78</ThemedText>
         </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
         <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
+          Chargé de Projet : Maxime Leroy - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">07.09.12.34.56</ThemedText>
         </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
         <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText> library
-          to create a waving hand animation.
+          Graphiste : Elise Morel - {' '}
+          <ThemedText style={styles.blueText} type="defaultSemiBold">06.88.99.00.44</ThemedText>
         </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
       </Collapsible>
     </ParallaxScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  mapImage: {
+    width: '100%',
+    height: 250,
+    borderRadius: 10,
+  },
   headerImage: {
     color: '#808080',
     bottom: -90,
@@ -98,5 +106,8 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: 'row',
     gap: 8,
+  },
+  blueText: {
+    color: 'blue', 
   },
 });

@@ -7,15 +7,18 @@ import { Camera, useCameraPermissions } from 'expo-camera';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import * as Location from 'expo-location';  
+
 
 type Obstacle = {
   id: number;
   title: string;
   description: string;
-  photos?: string[]; // Array of photo URIs
+  photos?: string[];
+  location?: { latitude: number; longitude: number };
 };
 
-const STORAGE_KEY = '@obstacles';
+const STORAGE_KEY = '@obstacles';  
 
 export default function HomeScreen() {
   const [obstacles, setObstacles] = useState<Obstacle[]>([]);
@@ -26,7 +29,7 @@ export default function HomeScreen() {
   const [newObstacle, setNewObstacle] = useState({ title: '', description: '' });
   const [cameraPermission, requestCameraPermission] = useCameraPermissions();
 
-  // Fonction pour charger les obstacles depuis AsyncStorage
+  // charger obstacles depuis storage
   const loadObstacles = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(STORAGE_KEY);
@@ -36,24 +39,24 @@ export default function HomeScreen() {
     }
   };
 
-  // Fonction pour supprimer un obstacle
+  // supprimer un obstacle
   const removeObstacle = async (id: number) => {
     const updatedObstacles = obstacles.filter((obstacle) => obstacle.id !== id);
     setObstacles(updatedObstacles);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedObstacles));
   };
 
-  // Fonction pour ajouter un nouvel obstacle
+  // ajouter un nouvel obstacle
   const addObstacle = async () => {
     const newId = obstacles.length > 0 ? obstacles[obstacles.length - 1].id + 1 : 1;
     const updatedObstacles = [...obstacles, { ...newObstacle, id: newId, photos: [] }];
     setObstacles(updatedObstacles);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedObstacles));
     setModalVisible(false);
-    setNewObstacle({ title: '', description: '' });
+    setNewObstacle({ title: '', description: ''});
   };
 
-  // Fonction pour éditer un obstacle existant
+  // éditer un obstacle existant
   const editObstacle = async () => {
     if (selectedObstacle) {
       const updatedObstacles = obstacles.map((obstacle) =>
@@ -70,7 +73,7 @@ export default function HomeScreen() {
     }
   };
 
-  // Fonction pour ouvrir la modale d'édition
+  // ouvrir la modale d'édition
   const openEditModal = (obstacle: Obstacle) => {
     setSelectedObstacle(obstacle);
     setNewObstacle({ title: obstacle.title, description: obstacle.description });
@@ -78,28 +81,27 @@ export default function HomeScreen() {
     setModalVisible(true);
   };
 
-  // Fonction pour ouvrir le modal d'ajout d'un obstacle
+  // ouvrir le modal d'ajout d'un obstacle
 const openAddModal = () => {
-  setNewObstacle({ title: '', description: '' }); // Réinitialise le nouvel obstacle
-  setEditMode(false); // Assure qu'on n'est pas en mode édition
-  setSelectedObstacle(null); // Aucun obstacle sélectionné
-  setModalVisible(true); // Ouvre le modal
+  setNewObstacle({ title: '', description: '' });
+  setEditMode(false); 
+  setSelectedObstacle(null); 
+  setModalVisible(true); 
 };
 
-// Fonction pour fermer le modal et réinitialiser les états
+// fermer le modal et réinitialiser les états
 const closeModal = () => {
   setModalVisible(false);
-  setEditMode(false); // Sort du mode édition
-  setSelectedObstacle(null); // Aucun obstacle sélectionné
-  setNewObstacle({ title: '', description: '' }); // Réinitialise le formulaire
+  setEditMode(false); 
+  setSelectedObstacle(null);
+  setNewObstacle({ title: '', description: '' }); 
 };
 
-// Fonction pour annuler la modification ou l'ajout
+// annuler la modification ou l'ajout
 const handleCancel = () => {
-  closeModal(); // Ferme et réinitialise le modal
+  closeModal(); 
 };
 
-  // Fonction pour prendre une photo et l'ajouter à l'obstacle sélectionné
   const takePhoto = async () => {
     if (!cameraPermission || !cameraPermission.granted) {
       const { status } = await requestCameraPermission();
@@ -116,7 +118,7 @@ const handleCancel = () => {
     }
   };
 
-  // Fonction pour choisir une photo depuis la galerie et l'ajouter à l'obstacle sélectionné
+  // choisir une photo depuis la galerie 
   const chooseFromGallery = async () => {
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.canceled && selectedObstacle) {
@@ -125,7 +127,7 @@ const handleCancel = () => {
     }
   };
 
-  // Fonction pour mettre à jour les photos d'un obstacle sélectionné
+  // maj les photos d'un obstacle sélectionné
   const updateObstaclePhotos = async (updatedPhotos: string[]) => {
     if (selectedObstacle) {
       const updatedObstacles = obstacles.map((obstacle) =>
@@ -137,7 +139,7 @@ const handleCancel = () => {
     }
   };
 
-  // Fonction pour afficher un menu avec les options pour ajouter des photos
+  // afficher me menu d'option
   const showPhotoOptions = () => {
     if (Platform.OS === 'ios') {
       ActionSheetIOS.showActionSheetWithOptions(
@@ -166,13 +168,13 @@ const handleCancel = () => {
     }
   };
 
-  // Fonction pour ouvrir la modale des photos d'un obstacle
+  // ouvrir la modale des photos d'un obstacle
   const openPhotoModal = (obstacle: Obstacle) => {
     setSelectedObstacle(obstacle);
     setPhotoModalVisible(true);
   };
 
-  // Fonction pour supprimer une photo spécifique
+  // supprimer une photo
   const removePhoto = async (photoUri: string) => {
     if (selectedObstacle) {
       const updatedPhotos = selectedObstacle.photos?.filter((photo) => photo !== photoUri);
@@ -185,7 +187,7 @@ const handleCancel = () => {
     }
   };
 
-  // Chargement des obstacles à l'initialisation
+  // chargement des obstaclex
   useEffect(() => {
     loadObstacles();
   }, []);
@@ -237,12 +239,12 @@ const handleCancel = () => {
         />
       </ParallaxScrollView>
 
-      {/* Bouton d'ajout d'obstacle */}
+      {/* Bouton ajout obstacle */}
       <TouchableOpacity onPress={openAddModal} style={styles.addButton}>
       <Ionicons name="add-outline" size={32} color="#fff" />
       </TouchableOpacity>
 
-      {/* Modale pour ajouter ou modifier un obstacle */}
+      {/* Modal pour ajouter ou modifier un obstacle */}
       <Modal visible={modalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -264,19 +266,16 @@ const handleCancel = () => {
               style={styles.input}
             />
             
-            {/* Bouton Ajouter Photo */}
             <TouchableOpacity onPress={showPhotoOptions} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>Ajouter Photo</Text>
             </TouchableOpacity>
 
-            {/* Bouton Enregistrer ou Ajouter */}
             <TouchableOpacity onPress={editMode ? editObstacle : addObstacle} style={styles.modalButton}>
               <Text style={styles.modalButtonText}>
                 {editMode ? 'Enregistrer' : 'Ajouter'}
               </Text>
             </TouchableOpacity>
 
-            {/* Bouton Annuler */}
             <TouchableOpacity
               onPress={handleCancel}
               style={[styles.modalButton, { backgroundColor: 'red' }]}>
@@ -286,7 +285,7 @@ const handleCancel = () => {
         </View>
       </Modal>
 
-      {/* Modale pour afficher et ajouter des photos à un obstacle */}
+      {/* Modal affiche et ajoute des photos à un obstacle */}
       <Modal
         visible={photoModalVisible}
         transparent={true}
@@ -348,7 +347,7 @@ const styles = StyleSheet.create({
   deleteButton: {
     marginTop: 8,
     padding: 8,
-    backgroundColor: '#ff4d4d', // Couleur de fond rouge pour supprimer
+    backgroundColor: '#ff4d4d', 
     borderRadius: 8,
     alignItems: 'center',
     marginRight: 8,
@@ -356,7 +355,7 @@ const styles = StyleSheet.create({
   editButton: {
     marginTop: 8,
     padding: 8,
-    backgroundColor: '#007AFF', // Couleur de fond bleue pour éditer
+    backgroundColor: '#007AFF',
     borderRadius: 8,
     alignItems: 'center',
     marginRight: 8,
@@ -364,7 +363,7 @@ const styles = StyleSheet.create({
   photoButton: {
     marginTop: 8,
     padding: 8,
-    backgroundColor: 'green', // Couleur de fond bleue pour ajouter photo
+    backgroundColor: 'green',
     borderRadius: 8,
     alignItems: 'center',
   },
@@ -376,7 +375,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 10,
     right: 10,
-    backgroundColor: '#007AFF', // Couleur de fond bleue pour le bouton d'ajout
+    backgroundColor: '#007AFF', 
     borderRadius: 50,
     padding: 12,
   },
@@ -384,17 +383,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
   },
   modalContent: {
-    backgroundColor: '#f0f0f0', // Couleur de fond gris clair pour le contenu modal
+    backgroundColor: '#f0f0f0', 
     padding: 20,
     borderRadius: 10,
     width: '80%',
     alignItems: 'center',
   },
   photoModalContent: {
-    backgroundColor: '#f0f0f0', // Couleur de fond gris clair pour le contenu modal de photo
+    backgroundColor: '#f0f0f0',
     padding: 20,
     borderRadius: 10,
     width: '80%',
@@ -402,7 +401,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 18,
-    color: 'black', // Couleur du texte en noir
+    color: 'black', 
   },
   input: {
     width: '100%',
@@ -413,7 +412,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   modalButton: {
-    backgroundColor: '#007AFF', // Couleur de fond bleue pour le bouton modal
+    backgroundColor: '#007AFF', 
     padding: 12,
     borderRadius: 8,
     marginVertical: 5,
@@ -421,7 +420,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalButtonText: {
-    color: '#fff', // Couleur du texte en blanc pour le bouton modal
+    color: '#fff',
     fontSize: 16,
   },
   modalInput: {
